@@ -21,6 +21,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { ConfirmModal } from "@/components/shared/confirm-modal";
 import { toast } from "sonner";
 import {
   Calendar,
@@ -529,50 +530,17 @@ export default function ManageEventsPage() {
       )}
 
       {/* Delete Confirmation Dialog */}
-      {deletingId && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in">
-          <div className="bg-card border border-border rounded-2xl max-w-md w-full shadow-2xl p-6 space-y-4">
-            <div className="w-12 h-12 rounded-xl bg-red-100 dark:bg-red-950/60 text-red-600 flex items-center justify-center">
-              <AlertTriangle className="w-6 h-6" />
-            </div>
-
-            <div className="space-y-2">
-              <h3 className="text-lg font-bold">Delete This Initiative?</h3>
-              <p className="text-sm text-muted-foreground">
-                This action cannot be undone. All volunteer registrations and details associated with this event will be permanently removed.
-              </p>
-            </div>
-
-            <div className="flex items-center justify-end gap-3 pt-3">
-              <Button
-                variant="outline"
-                onClick={() => setDeletingId(null)}
-                disabled={confirmingDelete}
-              >
-                Keep Event
-              </Button>
-              <Button
-                variant="destructive"
-                onClick={() => handleDelete(deletingId)}
-                disabled={confirmingDelete}
-                className="gap-2"
-              >
-                {confirmingDelete ? (
-                  <>
-                    <Loader2 className="w-4 h-4 animate-spin" />
-                    Deleting...
-                  </>
-                ) : (
-                  <>
-                    <Trash2 className="w-4 h-4" />
-                    Confirm Delete
-                  </>
-                )}
-              </Button>
-            </div>
-          </div>
-        </div>
-      )}
+      <ConfirmModal
+        isOpen={!!deletingId}
+        title="Delete This Initiative?"
+        description="This action cannot be undone. All volunteer registrations and details associated with this event will be permanently removed."
+        confirmLabel="Confirm Delete"
+        cancelLabel="Keep Event"
+        variant="destructive"
+        loading={confirmingDelete}
+        onConfirm={() => deletingId && handleDelete(deletingId)}
+        onCancel={() => setDeletingId(null)}
+      />
 
       <Footer />
     </div>

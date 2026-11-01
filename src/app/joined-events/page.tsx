@@ -18,6 +18,7 @@ import { fetchWithAuth } from "@/lib/api-client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { ConfirmModal } from "@/components/shared/confirm-modal";
 import { toast } from "sonner";
 import {
   Calendar,
@@ -312,47 +313,21 @@ export default function JoinedEventsPage() {
       </main>
 
       {/* Cancel RSVP Confirmation Dialog */}
-      {leavingEvent && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in">
-          <div className="bg-card border border-border rounded-2xl max-w-md w-full shadow-2xl p-6 space-y-4">
-            <div className="w-12 h-12 rounded-xl bg-amber-100 dark:bg-amber-950/60 text-amber-600 flex items-center justify-center">
-              <AlertTriangle className="w-6 h-6" />
-            </div>
-
-            <div className="space-y-2">
-              <h3 className="text-lg font-bold">Cancel Registration?</h3>
-              <p className="text-sm text-muted-foreground">
-                Are you sure you want to cancel your attendance for &ldquo;{leavingEvent.title}&rdquo;? Your spot will be released for other community volunteers.
-              </p>
-            </div>
-
-            <div className="flex items-center justify-end gap-3 pt-3">
-              <Button
-                variant="outline"
-                onClick={() => setLeavingEvent(null)}
-                disabled={cancelling}
-              >
-                Keep Registration
-              </Button>
-              <Button
-                variant="destructive"
-                onClick={() => handleLeaveEvent(leavingEvent._id)}
-                disabled={cancelling}
-                className="gap-2"
-              >
-                {cancelling ? (
-                  <>
-                    <Loader2 className="w-4 h-4 animate-spin" />
-                    Cancelling...
-                  </>
-                ) : (
-                  "Confirm Cancel"
-                )}
-              </Button>
-            </div>
-          </div>
-        </div>
-      )}
+      <ConfirmModal
+        isOpen={!!leavingEvent}
+        title="Cancel Registration?"
+        description={
+          leavingEvent
+            ? `Are you sure you want to cancel your attendance for "${leavingEvent.title}"? Your spot will be released for other community volunteers.`
+            : ""
+        }
+        confirmLabel="Confirm Cancel"
+        cancelLabel="Keep Registration"
+        variant="destructive"
+        loading={cancelling}
+        onConfirm={() => leavingEvent && handleLeaveEvent(leavingEvent._id)}
+        onCancel={() => setLeavingEvent(null)}
+      />
 
       <Footer />
     </div>
