@@ -99,7 +99,7 @@ export default function UpcomingEventsPage() {
                 <Calendar className="w-3.5 h-3.5" />
                 Community Calendar
               </Badge>
-              <h1 className="text-3xl md:text-5xl font-extrabold tracking-tight">
+              <h1 className="text-2xl sm:text-4xl md:text-5xl font-extrabold tracking-tight">
                 Upcoming Social Initiatives
               </h1>
               <p className="text-sm md:text-base text-muted-foreground max-w-2xl">
@@ -137,7 +137,7 @@ export default function UpcomingEventsPage() {
             </div>
 
             {/* Category Filter Pills */}
-            <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
+            <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none w-full max-w-full min-w-0">
               <Filter className="w-4 h-4 text-muted-foreground shrink-0 mr-1" />
               {CATEGORIES.map((cat) => (
                 <button

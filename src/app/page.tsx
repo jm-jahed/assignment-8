@@ -81,20 +81,16 @@ export default function HomePage() {
       <Navbar />
 
       <main className="flex-1">
-        {/* ========================================================================= */}
-        {/* SECTION 1: HERO & CALL TO ACTION                                          */}
-        {/* ========================================================================= */}
         <section className="relative overflow-hidden pt-12 pb-20 md:pt-20 md:pb-28 bg-gradient-to-b from-emerald-50/50 via-background to-background dark:from-emerald-950/20 dark:via-background dark:to-background">
           <div className="container mx-auto px-4">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-              {/* Left Column: Headlines & CTAs */}
               <div className="lg:col-span-7 space-y-6 text-center lg:text-left">
                 <Badge variant="secondary" className="px-3.5 py-1.5 gap-2 text-sm font-semibold rounded-full shadow-sm">
                   <Sparkles className="w-4 h-4 text-amber-500" />
                   Grassroots Social Development Platform
                 </Badge>
 
-                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-foreground leading-[1.15]">
+                <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-foreground leading-[1.15]">
                   Unite for Social Impact.{" "}
                   <span className="text-emerald-600 dark:text-emerald-400">
                     Empower Communities.
@@ -120,7 +116,6 @@ export default function HomePage() {
                   </Link>
                 </div>
 
-                {/* Trust Badges */}
                 <div className="pt-6 flex flex-wrap items-center justify-center lg:justify-start gap-6 text-xs text-muted-foreground font-medium">
                   <span className="flex items-center gap-1.5">
                     <ShieldCheck className="w-4 h-4 text-emerald-600" /> Verified Organizers
@@ -134,7 +129,6 @@ export default function HomePage() {
                 </div>
               </div>
 
-              {/* Right Column: Hero Visual Showcase */}
               <div className="lg:col-span-5 relative">
                 <div className="relative mx-auto max-w-md lg:max-w-none rounded-2xl overflow-hidden shadow-2xl border border-border group">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -154,13 +148,9 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* ========================================================================= */}
-        {/* SECTION 2: IMPACT METRICS & PLATFORM FEATURES                             */}
-        {/* ========================================================================= */}
         <section className="py-16 bg-muted/30 border-y border-border">
           <div className="container mx-auto px-4">
-            {/* Impact Counters */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 text-center">
               <div className="p-6 rounded-xl bg-card border border-border shadow-sm">
                 <p className="text-3xl md:text-4xl font-extrabold text-emerald-600 dark:text-emerald-400">1,850+</p>
                 <p className="text-xs md:text-sm font-medium text-muted-foreground mt-1">Registered Volunteers</p>
@@ -179,7 +169,6 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* Core Feature Pillars */}
             <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8">
               <div className="p-6 rounded-2xl bg-card border border-border space-y-3">
                 <div className="w-12 h-12 rounded-xl bg-emerald-100 dark:bg-emerald-950 flex items-center justify-center text-emerald-600">
@@ -214,9 +203,6 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* ========================================================================= */}
-        {/* SECTION 3: DYNAMIC RECENT UPCOMING EVENTS (.limit(6))                      */}
-        {/* ========================================================================= */}
         <section className="py-20">
           <div className="container mx-auto px-4">
             <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
@@ -238,7 +224,6 @@ export default function HomePage() {
               </Link>
             </div>
 
-            {/* Loading State: Skeletons */}
             {loading && (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {Array.from({ length: 6 }).map((_, idx) => (
@@ -247,7 +232,6 @@ export default function HomePage() {
               </div>
             )}
 
-            {/* Error State with Retry Button */}
             {!loading && error && (
               <div className="p-8 text-center rounded-2xl border border-border bg-card space-y-4 max-w-md mx-auto">
                 <p className="text-sm text-muted-foreground">
@@ -259,7 +243,6 @@ export default function HomePage() {
               </div>
             )}
 
-            {/* Empty State */}
             {!loading && !error && recentEvents.length === 0 && (
               <div className="p-12 text-center rounded-2xl border border-dashed border-border bg-card/50 space-y-4">
                 <div className="w-12 h-12 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-600 flex items-center justify-center mx-auto">
@@ -275,7 +258,6 @@ export default function HomePage() {
               </div>
             )}
 
-            {/* Events Grid (Max 6) */}
             {!loading && !error && recentEvents.length > 0 && (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {recentEvents.slice(0, 6).map((event) => (
@@ -286,9 +268,6 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* ========================================================================= */}
-        {/* SECTION 4: COMMUNITY ACTION IMAGE GALLERY                                 */}
-        {/* ========================================================================= */}
         <section className="py-16 bg-muted/20 border-t border-border">
           <div className="container mx-auto px-4">
             <div className="text-center max-w-2xl mx-auto space-y-3 mb-12">
@@ -385,9 +364,6 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* ========================================================================= */}
-        {/* SECTION 5: NEWSLETTER SUBSCRIPTION (FRONTEND ONLY)                        */}
-        {/* ========================================================================= */}
         <section className="py-20 bg-card border-t border-border">
           <div className="container mx-auto px-4 max-w-4xl">
             <div className="rounded-3xl p-8 md:p-14 bg-gradient-to-r from-emerald-600 via-emerald-700 to-teal-800 text-white shadow-xl text-center space-y-6">
