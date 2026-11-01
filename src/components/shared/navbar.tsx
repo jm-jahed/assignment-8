@@ -8,7 +8,6 @@ import { ThemeToggle } from "./theme-toggle";
 import { Button } from "@/components/ui/button";
 import {
   HeartHandshake,
-  Calendar,
   PlusCircle,
   FolderKanban,
   CheckCircle2,

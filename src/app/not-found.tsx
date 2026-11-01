@@ -13,7 +13,7 @@ import Link from "next/link";
 import { Navbar } from "@/components/shared/navbar";
 import { Footer } from "@/components/shared/footer";
 import { Button } from "@/components/ui/button";
-import { MapPinOff, ArrowLeft, Home, Compass } from "lucide-react";
+import { MapPinOff, Home, Compass } from "lucide-react";
 
 export default function NotFound() {
   return (

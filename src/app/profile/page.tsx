@@ -18,7 +18,6 @@ import { useAuth } from "@/context/auth-context";
 import { fetchWithAuth } from "@/lib/api-client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import {
   User,

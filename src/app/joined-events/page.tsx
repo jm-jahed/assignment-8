@@ -10,7 +10,6 @@
 
 import React, { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { Navbar } from "@/components/shared/navbar";
 import { Footer } from "@/components/shared/footer";
 import { useAuth } from "@/context/auth-context";
@@ -25,7 +24,6 @@ import {
   Clock,
   MapPin,
   CheckCircle2,
-  AlertTriangle,
   Loader2,
   Lock,
   ArrowRight,
@@ -51,8 +49,7 @@ interface JoinedEvent {
 }
 
 export default function JoinedEventsPage() {
-  const router = useRouter();
-  const { user, isAuthenticated, isLoading: authLoading } = useAuth();
+  const { isAuthenticated, isLoading: authLoading } = useAuth();
 
   const [joinedEvents, setJoinedEvents] = useState<JoinedEvent[]>([]);
   const [loading, setLoading] = useState(true);
