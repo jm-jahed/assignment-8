@@ -16,9 +16,35 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "CommunityConnect — Social Development Events Platform",
+  title: {
+    default: "CommunityConnect — Social Development Events Platform",
+    template: "%s | CommunityConnect",
+  },
   description:
-    "Discover, organize, and participate in grassroots social development initiatives in your community.",
+    "Discover, organize, and participate in grassroots social development initiatives. Empowering communities through clean drives, health camps, tree plantations, and relief programs.",
+  keywords: [
+    "Community Development",
+    "Social Impact",
+    "Volunteer Events",
+    "Tree Plantation",
+    "Health Camps",
+    "Disaster Relief",
+    "Grassroots Organizers",
+  ],
+  authors: [{ name: "CommunityConnect Team" }],
+  openGraph: {
+    title: "CommunityConnect — Social Development Events Platform",
+    description:
+      "Discover, organize, and join impactful grassroots social initiatives across your neighborhood.",
+    type: "website",
+    locale: "en_US",
+    siteName: "CommunityConnect",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "CommunityConnect — Social Development Events Platform",
+    description: "Discover, organize, and join grassroots social initiatives in your neighborhood.",
+  },
 };
 
 export default function RootLayout({
