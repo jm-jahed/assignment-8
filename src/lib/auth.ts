@@ -2,6 +2,14 @@ import { betterAuth } from "better-auth";
 import { mongodbAdapter } from "@better-auth/mongo-adapter";
 import { jwt } from "better-auth/plugins";
 import { MongoClient } from "mongodb";
+import dns from "node:dns";
+
+// Resilient DNS resolution for Windows environment
+try {
+  dns.setServers(["8.8.8.8", "1.1.1.1"]);
+} catch {
+  // Non-fatal if host environment restricts custom DNS
+}
 
 /**
  * Concept: Better Auth Server Instance & MongoDB Adapter
@@ -24,11 +32,9 @@ const mongoUri = process.env.MONGODB_URI || "mongodb://localhost:27017/community
 const client = new MongoClient(mongoUri);
 const db = client.db();
 
-// Determine if transaction support should be enabled (pass client if replica set/atlas)
 const isReplicaSet = mongoUri.includes("replicaSet") || mongoUri.includes("mongodb+srv");
 
 export const auth = betterAuth({
-  // Use server-only environment variable (never exposed to client browser bundle)
   baseURL: process.env.BETTER_AUTH_URL || "http://localhost:3000",
   database: mongodbAdapter(db, isReplicaSet ? { client } : undefined),
   emailAndPassword: {
@@ -50,7 +56,6 @@ export const auth = betterAuth({
         issuer: process.env.BETTER_AUTH_URL || "http://localhost:3000",
         audience: process.env.JWT_AUDIENCE || "community-connect-api",
         expirationTime: "15m",
-        // Minimal explicit payload - Better Auth automatically assigns sub: user.id
         definePayload: ({ user }) => ({
           email: user.email,
           name: user.name,
