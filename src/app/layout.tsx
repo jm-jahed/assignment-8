@@ -4,6 +4,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { AuthProvider } from "@/context/auth-context";
 import { Toaster } from "sonner";
+import { BackToTop } from "@/components/shared/back-to-top";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -59,6 +60,7 @@ export default function RootLayout({
           <AuthProvider>
             {children}
             <Toaster position="top-right" richColors closeButton />
+            <BackToTop />
           </AuthProvider>
         </ThemeProvider>
       </body>

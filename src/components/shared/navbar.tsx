@@ -68,6 +68,16 @@ export function Navbar() {
             <div className="relative">
               {/* User Avatar with Hover Name Tooltip */}
               <div
+                role="button"
+                tabIndex={0}
+                aria-label="User profile menu"
+                aria-expanded={dropdownOpen}
+                aria-haspopup="true"
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    setDropdownOpen(!dropdownOpen);
+                  }
+                }}
                 className="group relative flex items-center cursor-pointer"
                 onClick={() => setDropdownOpen(!dropdownOpen)}
               >
@@ -174,6 +184,7 @@ export function Navbar() {
             size="icon"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             aria-label="Toggle navigation menu"
+            aria-expanded={mobileMenuOpen}
           >
             {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </Button>
