@@ -170,7 +170,7 @@ export default function CreateEventPage() {
       }
 
       toast.success("Event created successfully! Your initiative is now live.");
-      router.push(`/events/${result.data._id}`);
+      router.push("/events");
     } catch (err: any) {
       toast.error(err.message || "An unexpected error occurred while creating your event.");
     } finally {

@@ -1,14 +1,5 @@
 "use client";
 
-/**
- * Concept: User Profile & Community Impact Dashboard.
- * Why: Provides members with an overview of their social contributions, volunteer statistics,
- *      and direct shortcuts to manage initiatives or explore upcoming drives.
- * How: Combines Better Auth session data from AuthContext with concurrent API queries to
- *      GET /api/v1/my-events and GET /api/v1/participants/me using Promise.all().
- * Example: A user reviews their volunteer level, 5 completed drives, and 2 organized events.
- */
-
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -17,7 +8,10 @@ import { Footer } from "@/components/shared/footer";
 import { useAuth } from "@/context/auth-context";
 import { fetchWithAuth } from "@/lib/api-client";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { authClient } from "@/lib/auth-client";
 import { toast } from "sonner";
 import {
   User,
@@ -32,17 +26,80 @@ import {
   Lock,
   Sparkles,
   HeartHandshake,
+  Edit3,
+  X,
+  CheckCircle,
 } from "lucide-react";
 
 export default function ProfilePage() {
   const router = useRouter();
-  const { user, isAuthenticated, isLoading: authLoading, logout } = useAuth();
+  const { user, isAuthenticated, isLoading: authLoading, logout, refetchSession } = useAuth();
 
   const [stats, setStats] = useState({
     organizedCount: 0,
     joinedCount: 0,
     loading: true,
   });
+
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [nameInput, setNameInput] = useState("");
+  const [imageInput, setImageInput] = useState("");
+  const [isSaving, setIsSaving] = useState(false);
+  const [formError, setFormError] = useState<string | null>(null);
+
+  const openEditModal = () => {
+    if (!user) return;
+    setNameInput(user.name || "");
+    setImageInput(user.image || "");
+    setFormError(null);
+    setEditModalOpen(true);
+  };
+
+  const handleSaveProfile = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setFormError(null);
+
+    const trimmedName = nameInput.trim();
+    if (!trimmedName || trimmedName.length < 2) {
+      setFormError("Name must be at least 2 characters long.");
+      return;
+    }
+
+    const trimmedImage = imageInput.trim();
+    if (trimmedImage) {
+      try {
+        const parsed = new URL(trimmedImage);
+        if (parsed.protocol !== "http:" && parsed.protocol !== "https:") {
+          setFormError("Image URL must use http:// or https://");
+          return;
+        }
+      } catch {
+        setFormError("Please enter a valid image URL (e.g. https://...).");
+        return;
+      }
+    }
+
+    try {
+      setIsSaving(true);
+      const res = await authClient.updateUser({
+        name: trimmedName,
+        image: trimmedImage || undefined,
+      });
+
+      if (res?.error) {
+        toast.error(res.error.message || "Failed to update profile.");
+        return;
+      }
+
+      await refetchSession();
+      toast.success("Profile updated successfully!");
+      setEditModalOpen(false);
+    } catch (err: any) {
+      toast.error(err.message || "An unexpected error occurred while updating profile.");
+    } finally {
+      setIsSaving(false);
+    }
+  };
 
   useEffect(() => {
     const fetchUserImpact = async () => {
@@ -119,7 +176,6 @@ export default function ProfilePage() {
     );
   }
 
-  // Calculate Impact Tier
   const totalInvolvement = stats.organizedCount + stats.joinedCount;
   let tierTitle = "New Changemaker";
   let tierColor = "bg-blue-100 text-blue-700 dark:bg-blue-950/50 dark:text-blue-300";
@@ -132,7 +188,6 @@ export default function ProfilePage() {
     tierColor = "bg-emerald-100 text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-300";
   }
 
-  // Initials for avatar fallback
   const initials = user.name
     ? user.name
         .split(" ")
@@ -148,13 +203,11 @@ export default function ProfilePage() {
 
       <main className="flex-1 py-10 md:py-16">
         <div className="container mx-auto px-4 max-w-4xl space-y-8">
-          {/* Header Card with User Overview */}
           <Card className="border-border shadow-sm overflow-hidden">
             <div className="h-32 bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-800" />
             <CardContent className="px-6 pb-6 pt-0 relative">
               <div className="flex flex-col sm:flex-row items-center sm:items-end justify-between gap-4 -mt-14 mb-4">
                 <div className="flex flex-col sm:flex-row items-center gap-4 text-center sm:text-left">
-                  {/* Avatar Circle */}
                   <div className="w-24 h-24 rounded-2xl bg-background border-4 border-background shadow-lg overflow-hidden flex items-center justify-center text-2xl font-black text-emerald-600 bg-muted">
                     {user.image ? (
                       // eslint-disable-next-line @next/next/no-img-element
@@ -182,20 +235,30 @@ export default function ProfilePage() {
                   </div>
                 </div>
 
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={handleLogout}
-                  className="gap-2 text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-950/30 shrink-0"
-                >
-                  <LogOut className="w-4 h-4" />
-                  Sign Out
-                </Button>
+                <div className="flex items-center gap-2 shrink-0">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={openEditModal}
+                    className="gap-1.5"
+                  >
+                    <Edit3 className="w-4 h-4 text-emerald-600" />
+                    Edit Profile
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={handleLogout}
+                    className="gap-2 text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-950/30 shrink-0"
+                  >
+                    <LogOut className="w-4 h-4" />
+                    Sign Out
+                  </Button>
+                </div>
               </div>
             </CardContent>
           </Card>
 
-          {/* Social Impact Stats Grid */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <Card className="border-border shadow-sm">
               <CardContent className="p-6 flex items-center gap-4">
@@ -241,7 +304,6 @@ export default function ProfilePage() {
             </Card>
           </div>
 
-          {/* Quick Management Shortcuts */}
           <div className="space-y-4">
             <h2 className="text-xl font-bold tracking-tight">Quick Shortcuts</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -315,7 +377,6 @@ export default function ProfilePage() {
             </div>
           </div>
 
-          {/* Account Security & Authentication Info */}
           <Card className="border-border shadow-sm">
             <CardHeader>
               <CardTitle className="text-base flex items-center gap-2">
@@ -345,6 +406,116 @@ export default function ProfilePage() {
           </Card>
         </div>
       </main>
+
+      {editModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in">
+          <div className="bg-card border border-border rounded-2xl max-w-md w-full max-h-[90vh] overflow-y-auto shadow-2xl p-6 space-y-5">
+            <div className="flex items-center justify-between border-b border-border pb-3">
+              <h2 className="text-xl font-bold flex items-center gap-2">
+                <Edit3 className="w-5 h-5 text-emerald-600" />
+                Edit Profile
+              </h2>
+              <button
+                type="button"
+                onClick={() => setEditModalOpen(false)}
+                className="p-1 rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground"
+                aria-label="Close dialog"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <form onSubmit={handleSaveProfile} className="space-y-4">
+              {formError && (
+                <div className="p-3 rounded-lg bg-red-50 dark:bg-red-950/30 text-red-600 border border-red-500/20 text-xs">
+                  {formError}
+                </div>
+              )}
+
+              <div className="space-y-1.5">
+                <Label htmlFor="profile-email">Email Address</Label>
+                <Input
+                  id="profile-email"
+                  type="email"
+                  value={user.email}
+                  disabled
+                  className="bg-muted text-muted-foreground cursor-not-allowed"
+                />
+                <p className="text-[11px] text-muted-foreground">
+                  Email is linked to your login provider and cannot be changed.
+                </p>
+              </div>
+
+              <div className="space-y-1.5">
+                <Label htmlFor="profile-name">Full Name *</Label>
+                <Input
+                  id="profile-name"
+                  type="text"
+                  value={nameInput}
+                  onChange={(e) => setNameInput(e.target.value)}
+                  placeholder="e.g. Jane Doe"
+                  required
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <Label htmlFor="profile-image">Avatar Image URL</Label>
+                <Input
+                  id="profile-image"
+                  type="url"
+                  value={imageInput}
+                  onChange={(e) => setImageInput(e.target.value)}
+                  placeholder="https://images.unsplash.com/..."
+                />
+                <p className="text-[11px] text-muted-foreground">
+                  Enter an image URL for your profile picture.
+                </p>
+              </div>
+
+              {imageInput.trim() && (
+                <div className="flex items-center gap-3 p-3 rounded-xl bg-muted/40 border border-border">
+                  <div className="w-12 h-12 rounded-full overflow-hidden bg-muted border border-border shrink-0 flex items-center justify-center">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={imageInput.trim()}
+                      alt="Avatar Preview"
+                      className="w-full h-full object-cover"
+                      onError={(e) => {
+                        (e.currentTarget as HTMLElement).style.display = "none";
+                      }}
+                    />
+                  </div>
+                  <span className="text-xs text-muted-foreground">Avatar preview</span>
+                </div>
+              )}
+
+              <div className="flex items-center justify-end gap-3 pt-3 border-t border-border">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => setEditModalOpen(false)}
+                  disabled={isSaving}
+                >
+                  Cancel
+                </Button>
+                <Button type="submit" disabled={isSaving} className="gap-2">
+                  {isSaving ? (
+                    <>
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                      Saving...
+                    </>
+                  ) : (
+                    <>
+                      <CheckCircle className="w-4 h-4" />
+                      Save Changes
+                    </>
+                  )}
+                </Button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
 
       <Footer />
     </div>
