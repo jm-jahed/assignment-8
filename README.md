@@ -79,14 +79,7 @@ MONGODB_URI=your_mongodb_connection_string
 BETTER_AUTH_SECRET=your_auth_secret_key
 JWT_AUDIENCE=community-connect-api
 
-# Social Auth (Optional)
-GOOGLE_CLIENT_ID=
-GOOGLE_CLIENT_SECRET=
-GITHUB_CLIENT_ID=
-GITHUB_CLIENT_SECRET=
-```
 
----
 
 ## How to Run Locally
 
