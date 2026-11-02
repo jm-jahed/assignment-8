@@ -8,7 +8,7 @@ CommunityConnect is a responsive web application built with Next.js (App Router)
 
 - **Client Repository:** https://github.com/jm-jahed/assignment-8
 - **Server Repository:** https://github.com/jm-jahed/assignment-8-server
-- **Live Application:** *[Deployment in progress]*
+- **Live Application:** https://assignment-8-eta-liart.vercel.app/
 
 ---
 
