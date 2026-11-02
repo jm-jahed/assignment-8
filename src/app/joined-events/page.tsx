@@ -29,7 +29,6 @@ import {
   ArrowRight,
   Eye,
   LogOut,
-  Sparkles,
 } from "lucide-react";
 
 interface JoinedEvent {
@@ -156,7 +155,7 @@ export default function JoinedEventsPage() {
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-border pb-6">
             <div className="space-y-1">
               <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-100 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-300">
-                <Sparkles className="w-3.5 h-3.5" />
+                <CheckCircle2 className="w-3.5 h-3.5" />
                 Active Volunteer
               </div>
               <h1 className="text-3xl font-extrabold tracking-tight">Your Joined Initiatives</h1>

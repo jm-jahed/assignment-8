@@ -24,7 +24,6 @@ import {
   ArrowRight,
   Loader2,
   Lock,
-  Sparkles,
   HeartHandshake,
   Edit3,
   X,
@@ -399,7 +398,7 @@ export default function ProfilePage() {
               <div className="flex justify-between py-1">
                 <span>Account Status</span>
                 <span className="text-emerald-600 font-bold flex items-center gap-1">
-                  <Sparkles className="w-3 h-3" /> Active & Verified
+                  <ShieldCheck className="w-3 h-3" /> Active & Verified
                 </span>
               </div>
             </CardContent>

@@ -36,7 +36,6 @@ import {
   Loader2,
   Lock,
   ArrowRight,
-  Sparkles,
 } from "lucide-react";
 
 // Pre-defined curated images for quick organizer selection
@@ -237,7 +236,7 @@ export default function CreateEventPage() {
           {/* Header Title Section */}
           <div className="space-y-2 text-center md:text-left">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-100 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-300">
-              <Sparkles className="w-3.5 h-3.5" />
+              <CalendarPlus className="w-3.5 h-3.5" />
               Empower Your Community
             </div>
             <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight">

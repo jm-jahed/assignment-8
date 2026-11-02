@@ -13,7 +13,6 @@ import {
   HeartHandshake,
   Calendar,
   Users,
-  Sparkles,
   ArrowRight,
   ShieldCheck,
   CheckCircle2,
@@ -86,7 +85,7 @@ export default function HomePage() {
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
               <div className="lg:col-span-7 space-y-6 text-center lg:text-left">
                 <Badge variant="secondary" className="px-3.5 py-1.5 gap-2 text-sm font-semibold rounded-full shadow-sm">
-                  <Sparkles className="w-4 h-4 text-amber-500" />
+                  <HeartHandshake className="w-4 h-4 text-emerald-600" />
                   Grassroots Social Development Platform
                 </Badge>
 

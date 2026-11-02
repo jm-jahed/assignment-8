@@ -15,7 +15,6 @@ import {
   LogOut,
   Menu,
   X,
-  Sparkles,
 } from "lucide-react";
 
 export function Navbar() {
@@ -91,7 +90,7 @@ export function Navbar() {
 
                 {/* Show user name on profile hover */}
                 <div className="absolute top-11 right-0 hidden group-hover:flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-popover text-popover-foreground text-xs font-semibold shadow-md border border-border whitespace-nowrap z-50 pointer-events-none">
-                  <Sparkles className="w-3.5 h-3.5 text-amber-500" />
+                  <User className="w-3.5 h-3.5 text-emerald-600" />
                   {user.name}
                 </div>
               </div>
