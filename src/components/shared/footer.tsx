@@ -98,7 +98,7 @@ export function Footer() {
             <ul className="space-y-2.5 text-sm text-muted-foreground">
               <li className="flex items-center gap-2.5">
                 <MapPin className="w-4 h-4 text-emerald-600 shrink-0" />
-                <span>120 Community Plaza, City Center</span>
+                <span>120 Community Plaza, City Center, Dhaka, Bangladesh</span>
               </li>
               <li className="flex items-center gap-2.5">
                 <Mail className="w-4 h-4 text-emerald-600 shrink-0" />
