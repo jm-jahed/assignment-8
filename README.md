@@ -1,125 +1,121 @@
 # CommunityConnect — Social Development Events Platform (Client)
 
-CommunityConnect is a modern, responsive web application built with **Next.js (App Router)**, **TypeScript**, **Tailwind CSS v4**, and **Shadcn UI**. The platform empowers local communities to organize, discover, and participate in grassroots social development initiatives—such as environmental cleanups, blood donation drives, tree plantations, youth literacy workshops, and public healthcare clinics.
+CommunityConnect is a responsive web application built with Next.js (App Router), TypeScript, Tailwind CSS, and Shadcn UI. The platform allows users to organize, discover, and join community initiatives such as cleanups, blood donation drives, tree plantations, literacy workshops, and health camps.
 
 ---
 
-## 🌐 Live URL & Repository Links
+## Repository Links
 
-- **Live Application:** *[Planned Deployment on Vercel — Link Coming Soon]*
-- **Client GitHub Repository:** [https://github.com/jm-jahed/assignment-8](https://github.com/jm-jahed/assignment-8)
-- **Server API Repository:** *[Server GitHub URL to be configured]*
-
----
-
-## ✨ Core Features (Minimum 5 Detailed Capabilities)
-
-1. **Dynamic Homepage with MongoDB Limit (Limit 6):**
-   - Displays real-time impact statistics (Active Volunteers, Drives Completed, Communities Impacted).
-   - Dynamically showcases the six nearest upcoming social development initiatives fetched from the Express API with MongoDB `.find({ status: "Upcoming", date: { $gte: now } }).sort({ date: 1 }).limit(6)`.
-   - Responsive hero banners with call-to-action buttons, cause exploration grid, community photo gallery, and newsletter engagement.
-
-2. **Full Initiative Lifecycle Management (Organizer CRUD Dashboard):**
-   - Protected event creation form with React Hook Form and Zod schema validation ensuring future dates, positive capacity limits, and image URLs.
-   - Comprehensive organizer dashboard (`/manage-events`) displaying attendee turnout progress (`{joinedCount} / {capacity}`) in real-time.
-   - Ownership-guarded update (`PATCH /api/v1/events/:id`) and delete (`DELETE /api/v1/events/:id`) workflows featuring double-confirmation modal dialogs.
-
-3. **Concurrency-Safe Volunteer Participation (RSVP System):**
-   - Dynamic event details view (`/events/[id]`) with live second-by-second kickoff countdown timer, interactive location pin, and category tags.
-   - Concurrency-safe event RSVP leveraging MongoDB atomic operators (`$expr: { $lt: ["$joinedCount", "$capacity"] }`, `$inc: { joinedCount: 1 }`) and compound unique index `{ event: 1, user: 1 }` to prevent oversubscription and duplicate joins.
-   - Dedicated volunteer schedule page (`/joined-events`) with one-click cancellation that atomically restores capacity spots.
-
-4. **Debounced Search & Multi-Criteria Filtering Engine:**
-   - Real-time keyword search optimized with a custom 300ms debounce hook (`useDebounce`) preventing redundant network queries.
-   - Instant category filter pills (Environment, Healthcare, Education, Disaster Relief, Community Cleanliness, Animal Welfare).
-   - Zero-layout-shift skeleton loading states (`EventCardSkeleton`) and friendly empty-state illustrations with clear reset filters.
-
-5. **Security, Authentication & Edge Route Protection:**
-   - Powered by Better Auth with MongoDB Adapter and EdDSA asymmetric JWT cryptography.
-   - Password security validator strictly enforcing minimum 6 characters, at least 1 uppercase letter, and at least 1 lowercase letter.
-   - Edge runtime middleware (`client/src/middleware.ts`) automatically guarding dashboard routes (`/create-event`, `/manage-events`, `/joined-events`, `/profile`) and redirecting guests to login with `callbackUrl`.
-
-6. **Accessibility & Responsive Dark/Light Theming:**
-   - Seamless Light and Dark theme switching powered by `next-themes` with no flash of unstyled content (FOUC).
-   - Floating accessible "Back to Top" navigation button, mobile drawer menu with ARIA attributes, and custom branded 404 & global error boundaries.
+- **Client Repository:** https://github.com/jm-jahed/assignment-8
+- **Server Repository:** https://github.com/jm-jahed/assignment-8-server
+- **Live Application:** *[Deployment in progress]*
 
 ---
 
-## 🛠️ Technology Stack & Verified Versions
+## Features
 
-| Category | Technology | Version | Purpose |
-| :--- | :--- | :--- | :--- |
-| **Framework** | Next.js (App Router) | `16.4.3` | React Server/Client Components, Routing & Edge Middleware |
-| **UI Library** | React | `19.3.0` | Component Architecture & Hooks |
-| **Language** | TypeScript | `5.x` | End-to-End Type Safety |
-| **Styling** | Tailwind CSS | `v4` | Modern Utility-First Responsive Styling |
-| **Components** | Shadcn UI Primitives | Latest | Accessible, headless UI building blocks |
-| **Icons** | Lucide React | `1.66.0` | Semantic SVGs & UI indicators |
-| **Notifications** | Sonner | `2.0.8` | Accessible toast alerts |
-| **Validation** | Zod + React Hook Form | `^4.6.7` / `^7.91.0` | Strict client-side form schema enforcement |
-| **Auth Client** | Better Auth SDK | `^1.7.15` | Session management, OAuth, and JWT cookies |
+1. **Homepage with Recent Events (Limit 6):**
+   - Impact summary statistics (Active Volunteers, Drives Completed, Communities Impacted).
+   - Shows the six nearest upcoming events fetched from the Express API using MongoDB `.limit(6)`.
+   - Hero banner, initiative categories, photo gallery, and newsletter subscription section (UI design).
+
+2. **Event Management (Organizers):**
+   - Create event form with validation for title, description, category, date, time, location, capacity, and image URL.
+   - Rejects past dates so only future events can be created.
+   - Organizer dashboard (`/manage-events`) to view created events and attendee count.
+   - Update and delete actions protected so only the creator can edit or remove their events.
+
+3. **Event Participation (RSVP System):**
+   - Event details page (`/events/[id]`) with countdown timer, event info, and seat counter.
+   - Join and leave events with capacity limits and duplicate join prevention.
+   - Joined events page (`/joined-events`) showing events joined by the logged-in user, sorted by event date (earliest first).
+
+4. **Search and Category Filtering:**
+   - Search events by keyword with 300ms debounce.
+   - Filter events by category (Environment, Healthcare, Education, Disaster Relief, Community Cleanliness, Animal Welfare).
+   - Skeleton loading states and empty state messages.
+
+5. **Authentication and Protected Routes:**
+   - Email and password registration and login powered by Better Auth.
+   - Password validation requiring minimum 6 characters, at least 1 uppercase letter, and at least 1 lowercase letter.
+   - Protected routes (`/create-event`, `/manage-events`, `/joined-events`, `/profile`) automatically redirect unauthenticated users to the login page.
+
+6. **Responsive Design and Theme Toggle:**
+   - Optimized for desktop, tablet, and mobile screens.
+   - Light and dark theme toggle.
+   - Custom 404 page and modern X social logo in the footer.
 
 ---
 
-## 🔐 Environment Variables Configuration
+## Tech Stack
 
-Create a `.env.local` file in the `client/` root directory using the template below:
+- **Framework:** Next.js 16 (App Router)
+- **Frontend Library:** React 19
+- **Language:** TypeScript
+- **Styling:** Tailwind CSS v4 & Shadcn UI
+- **Icons:** Lucide React
+- **Notifications:** Sonner (Toast)
+- **Validation:** Zod & React Hook Form
+- **Authentication:** Better Auth
+
+---
+
+## Environment Variables
+
+Create a `.env.local` file in the `client` directory with the following variables:
 
 ```env
 # Client Base URL
 BETTER_AUTH_URL=http://localhost:3000
-NEXT_PUBLIC_APP_URL=http://localhost:3000
+NEXT_PUBLIC_BETTER_AUTH_URL=http://localhost:3000
 
 # Express Backend API URL
 NEXT_PUBLIC_API_URL=http://localhost:5000/api/v1
 
-# MongoDB Atlas Database Connection (Shared with Better Auth Mongo Adapter)
-MONGODB_URI=mongodb+srv://<username>:<password>@cluster0.g2whair.mongodb.net/community_connect?retryWrites=true&w=majority
+# MongoDB Connection
+MONGODB_URI=your_mongodb_connection_string
 
-# Better Auth Secret (Min 32 characters random string)
-BETTER_AUTH_SECRET=your_32_character_cryptographic_secret_here
+# Better Auth Secret
+BETTER_AUTH_SECRET=your_auth_secret_key
+JWT_AUDIENCE=community-connect-api
 
-# Google OAuth Provider (Optional - for social login)
-GOOGLE_CLIENT_ID=your_google_oauth_client_id.apps.googleusercontent.com
-GOOGLE_CLIENT_SECRET=your_google_oauth_client_secret
-
-# GitHub OAuth Provider (Optional - for social login)
-GITHUB_CLIENT_ID=your_github_oauth_client_id
-GITHUB_CLIENT_SECRET=your_github_oauth_client_secret
+# Social Auth (Optional)
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
+GITHUB_CLIENT_ID=
+GITHUB_CLIENT_SECRET=
 ```
-
-> **Note:** Never commit `.env` or `.env.local` to Git. Both files are strictly ignored in `.gitignore`.
 
 ---
 
-## 🚀 Getting Started Locally
+## How to Run Locally
 
 ### Prerequisites
-- Node.js (v20+ or v24+ recommended)
-- npm (Use `npm.cmd` on Windows command line where necessary)
+- Node.js (v20 or v24 recommended)
+- npm
 
-### Installation & Run
+### Steps
 
-1. **Clone the repository:**
+1. **Clone the repository and navigate into it:**
    ```bash
    git clone https://github.com/jm-jahed/assignment-8.git
-   cd assignment-8/client
+   cd assignment-8
    ```
 
-2. **Install project dependencies:**
+2. **Install dependencies:**
    ```bash
    npm install
    ```
 
-3. **Configure environment:**
-   Create `.env.local` following the template above.
+3. **Create `.env.local`:**
+   Configure your environment variables as shown above.
 
-4. **Run automated client verification tests:**
+4. **Run tests:**
    ```bash
    npm run test
    ```
 
-5. **Start development server:**
+5. **Start the development server:**
    ```bash
    npm run dev
    ```
@@ -132,22 +128,23 @@ GITHUB_CLIENT_SECRET=your_github_oauth_client_secret
 
 ---
 
-## 🧪 Testing Suite
+## Tests
 
-CommunityConnect includes an automated client validation test suite verifying all mandatory assignment rules:
-- Password security constraint: Min 6 characters (`PASS`)
-- Password uppercase constraint: At least 1 uppercase letter (`PASS`)
-- Password lowercase constraint: At least 1 lowercase letter (`PASS`)
-- Password mismatch rejection (`PASS`)
-- Login credential schema validation (`PASS`)
-
-Run tests via:
+Run the client-side validation tests:
 ```bash
 npm run test
 ```
 
+Verifies:
+- Password minimum length (6 characters)
+- Uppercase letter requirement
+- Lowercase letter requirement
+- Password confirmation match
+- Login credentials validation
+
 ---
 
-## 👤 Author
-- **Developer:** Tanjim Hasan
+## Author
+
+- **Name:** MD Jahedul Islam
 - **Assignment:** Assignment 8 — Social Development Events Platform
